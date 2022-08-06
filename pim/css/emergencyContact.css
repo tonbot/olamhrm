@@ -1,0 +1,231 @@
+:root {
+    /* change the values below to your colors from your palette */
+    --primary-color: #393D3F;
+    --secondary-color: #546A7B;
+    --accent1-color: #62929E;
+    --accent2-color: #FDFDFF;
+    --accent3-color: #C6C5B9;
+    --accent4-color: #C6C5B9;
+    --subnav-background-color: rgba(168, 81, 31, 0.726);
+  
+    /* change the values below to your chosen font(s) */
+    --heading-font: 'Fira Sans', sans-serif;
+    --paragraph-font: 'Source Sans Pro', sans-serif;
+  
+    /* these colors below should be chosen from among your palette colors above */
+    --headline-color-on-white: #393D3F;
+    /* headlines on a white background */
+    --headline-color-on-color: #FDFDFF;
+    /* headlines on a colored background */
+    --paragraph-color-on-white: #393D3F;
+    /* paragraph text on a white background */
+    --paragraph-color-on-color: #FDFDFF;
+    /* paragraph text on a colored background */
+    --paragraph-background-color: #393D3F;
+    --nav-link-color: #FDFDFF;
+    --nav-background-color: #393D3F;
+    --nav-hover-link-color: #546A7B;
+    --nav-hover-background-color: #FDFDFF;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
+  
+  .mother-container {
+    padding: 40px;
+    padding-left: 30px;
+    width: 1000px;
+  
+  }
+  
+  .row-container {
+    width: 1500px !important;
+    padding-right: 180px;
+    overflow: hidden;
+  }
+  
+  .image-container {
+    text-align: center;
+  }
+  
+  .image-container img {
+    width: 150px;
+    height: auto;
+  }
+  
+  .links-container {
+    text-align: left;
+    margin-top: 20px;
+    background-color: rgb(168, 81, 31);
+    color: var(--accent2-color);
+    border-radius: 5px;
+  }
+  
+  .links-container ul {
+    list-style-type: none;
+    font-size: 12px;
+    padding: 10px;
+  }
+  
+  .links-container ul li {
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    line-height: 15px;
+    border-bottom: 1px solid var(--accent2-color);
+  }
+  
+  .links-container ul li a {
+    text-decoration: none;
+    color: var(--accent2-color);
+    letter-spacing: 1px;
+  }
+  
+  .active {
+    background-color: var(--primary-color);
+    color: var(--accent2-color);
+    border-radius: 5px;
+  }
+  
+  .links-container ul li:hover {
+    background-color: var(--primary-color);
+    color: var(--accent2-color);
+    border-radius: 5px;
+  }
+  
+  .row {
+    margin-top: 15px;
+  }
+  
+  .card-container {
+    margin: 40px 50px;
+  }
+  
+  .card {
+    background-color: rgba(0, 0, 0, 0.021);
+  }
+  
+  .card-body {
+    padding-top: 30px;
+    padding-bottom: 30px;
+  }
+  
+  .col-2 span {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.8)
+  }
+  
+  .col-10 input,
+  .col-10 select,
+  .col-10 span {
+    border-color: rgba(0, 0, 0, 0.3);
+    border-width: 1px;
+    padding-left: 2px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.8);
+    width: 220px;
+  }
+  
+  .col-10 input:focus,
+  .col-10 select:focus {
+    border-width: 1px;
+    outline: 0px;
+  }
+  
+  .col-10 select {
+    padding: 3px 2px;
+  }
+  
+  .col-10 input[type="file"] {
+    border-width: 1px;
+    border-color: rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.7);
+  }
+  
+  .second-row span {
+    margin-left: 30px
+  }
+  
+  .second-row-input {
+    margin-left: 46px
+  }
+  
+  .name-break {
+    text-align: center;
+    position: absolute;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.8);
+    padding: 0px 30px;
+    left: 30px;
+    top: -25px;
+  }
+  
+  .name-break label {
+    margin-right: 130px;
+  }
+  
+  .login-details-container {
+    display: none;
+  }
+  
+  em {
+    color: red;
+  }
+  
+  .attachment-body, .contact_form {
+    display: none;
+  }
+
+  :disabled {
+    background-color: rgba(0, 255, 255, 0.068);
+  }
+  table th {
+    font-size: 12px;
+  }
+  table td {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  table thead tr th:nth-child(1){
+      /* background-color: var(--nav-hover-background-color); */
+      width: 2px !important; 
+  }
+  table tbody tr td:nth-child(1){
+      width: 2px !important; 
+  }
+  thead {
+    background-color: rgb(168, 81, 31);
+    color: #fff;
+    padding: 0px !important;
+  }
+  th:hover{
+    background-color:rgb(247, 93, 4) !important;
+  }
+td.day:hover{
+  background-color:rgb(247, 93, 4) !important;
+  color: white;
+}
+  .btn.btn-primary.shadow-sm:hover {
+    box-shadow: 5px 2px 8px rgba(0, 0, 0, 0.2) !important;
+  }
+  .pagination {
+    font-size: 12px !important;
+  }
+  .dataTables_info {
+    font-size: 12px !important;
+  }
+  .dataTables_length {
+    font-size: 12px !important;
+    display: none;
+  }
+  tr.odd {
+    padding: 3px !important;
+  }
+
+  @media screen and (min-width: 300px) {
+    body {
+      overflow-x: visible;
+    }
+  }
