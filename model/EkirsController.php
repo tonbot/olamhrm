@@ -61,6 +61,8 @@ class Controller
             return $this->uploadAttachment($runData,$runData->k);
         case 'jAttachment':
             return $this->uploadAttachment($runData,$runData->k);
+        case 'sAttachment':
+            return $this->uploadAttachment($runData,$runData->k);
         case 'emergencyContact':
              return $this->addEmergencyContact($runData);
         case 'nok':
@@ -69,6 +71,8 @@ class Controller
             return $this->addDependent($runData);
         case 'job':
             return $this->addJob($runData);
+        case 'salary':
+            return $this->addSalary($runData);
         case 'getEmergencyContact':
             $query = "SELECT * FROM hr_emergency_contact WHERE emp_id =:id"; 
             return $this->getData($runData,$query);
@@ -77,6 +81,9 @@ class Controller
              return $this->getData($runData,$query);
         case 'getDependent':
             $query = "SELECT * FROM hr_dependent WHERE emp_id =:id"; 
+            return $this->getData($runData,$query);
+        case 'getSalary':
+            $query = "SELECT * FROM hr_salary WHERE emp_id =:id"; 
             return $this->getData($runData,$query);
         case 'getJobTitles':
             $query = "SELECT * FROM hr_job_title"; 
@@ -96,10 +103,63 @@ class Controller
     }
 }
 
-   
 
 
+   //add emplyee
+   private function addSalary($runData)
+    {
+            switch ($runData->b) {
+                case 'true':
+                    $query     = "INSERT INTO hr_salary(emp_id, salary_component, salary_period, currency,amount,comment,account_number,account_type,routing_number,direct_amount) VALUES (:emp_id,:salary_component, :salary_period, :currency,:amount,:comment,:account_number,:account_type,:routing_number,:direct_amount)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'              => $runData -> l,
+                            ':salary_component'    => $runData -> c,
+                            ':salary_period'       => $runData -> d,
+                            ':currency'            => $runData -> e,
+                            ':amount'              => $runData -> f,
+                            ':comment'             => $runData -> g,
+                            ':account_number'      => $runData -> h,
+                            ':account_type'        => $runData -> i,
+                            ':routing_number'      => $runData -> j,
+                            ':direct_amount'       => $runData -> m
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Salary Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Salary Record cannot be created!!!" );  
+                                }
+                break;
+                case 'false':
 
+                    $query     = "INSERT INTO hr_salary(emp_id, salary_component, salary_period, currency,amount,comment) VALUES (:emp_id, :salary_component, :salary_period, :currency,:amount,:comment)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'              => $runData -> l,
+                            ':salary_component'    => $runData -> c,
+                            ':salary_period'       => $runData -> d,
+                            ':currency'            => $runData -> e,
+                            ':amount'              => $runData -> f,
+                            ':comment'             => $runData -> g
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Salary Record created Successfully"); 
+                                }  
+                
+                                return $this->responseData("error", 400, "Something wrong, Salary Record cannot be created!!!" );  
+                default:
+                    return $this->responseData("error", 405, "Something wrong"); 
+                  
+            }
+
+
+               
+    }
+/*********************************************ADD SALARY******************************************************** */
 
 
 /*********************************************THESE USE TO GET DATA FROM DATABASE******************************************************** */

@@ -169,7 +169,10 @@
   .login-details-container {
     display: none;
   }
-  
+.createDeposit-container{
+  display: none;
+}
+
   em {
     color: red;
   }
@@ -222,6 +225,10 @@ td.day:hover{
   }
   tr.odd {
     padding: 3px !important;
+  }
+  .createDeposit{
+    position: relative;
+    left:-100px;
   }
 
   @media screen and (min-width: 300px) {
