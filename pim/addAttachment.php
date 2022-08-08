@@ -1,4 +1,4 @@
-<div class="card mt-5">
+<div class="card mt-5 shadow ">
                     <div class="card-header">
                         <h6>Add Attachment</h6>
                     </div>

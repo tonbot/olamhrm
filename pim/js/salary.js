@@ -51,23 +51,19 @@ $(document).ready(function () {
         $(".attachment-body").css("display", "none");
         $(".add").css("display", "block");
     });
-    //toggle table container
-    $(".open").click(function () {
-        if ($(this).text() == "Open") {
-            $(this).text("Close");
-            $(".table-container").show();
-            return;
-        } else {
-            $(".table-container").hide();
-            $(this).text("Open");
-            return
-        }
-
-
-
-    });
-//    get salary details
-   
+     
+   //toggle table container
+   $(".open").click(function () {
+    if ($(this).text() == "Open") {
+        $(this).text("Close");
+        $(".table-container").show();
+        return;
+    } else {
+        $(".table-container").hide();
+        $(this).text("Open");
+        return
+    }
+});
     /******************************************GET SALARY DATA************************************************* */
     let id = $("#id").html(); //Employee id
     getSalary();
@@ -174,7 +170,7 @@ $(document).ready(function () {
         amount = (amount === "") ? $("#amount").css("border-color", "red") : amount.trim();
         let comment = $("#comment").val().trim();
 
-         console.log (salary_component , salary_period , currency, amount, comment);
+        //  console.log (salary_component , salary_period , currency, amount, comment);
 
         //if create Deposit details
         if ($(".createDeposit").is(':checked')) {   
@@ -216,7 +212,7 @@ $(document).ready(function () {
                 k: "salary",
                 l: id,
             }
-            console.log(fd)
+            // console.log(fd)
             putSalary(fd);
         } else { //create Deposit is false
             let fd = {
@@ -230,7 +226,7 @@ $(document).ready(function () {
                 k: "salary",
                 l: id,
             }
-            console.log(fd)
+            // console.log(fd)
             putSalary(fd);
         }
 
@@ -256,8 +252,11 @@ $(document).ready(function () {
             data: fd,
             encode: true,
             success: function (data) {
-                alert(data);
-              //  getDependent()// Emergency Contact
+                let response = JSON.parse(data);
+                if (response.code == "200"){
+                    alert(response.message);
+                }    
+                getSalary();
             },
             error: function (error) {
                 /**on error function */
@@ -267,12 +266,5 @@ $(document).ready(function () {
     }
 
     /******************************************SAVE DATA************************************************* */
-
-
-    /******************************************DATA VALIDATOR************************************************* */
-
-    /******************************************DATA VALIDATOR************************************************* */
-
-
 
 }); //end of jquery

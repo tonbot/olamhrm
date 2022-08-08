@@ -63,6 +63,8 @@ class Controller
             return $this->uploadAttachment($runData,$runData->k);
         case 'sAttachment':
             return $this->uploadAttachment($runData,$runData->k);
+        case 'rAttachment':
+            return $this->uploadAttachment($runData,$runData->k);
         case 'emergencyContact':
              return $this->addEmergencyContact($runData);
         case 'nok':
@@ -73,6 +75,8 @@ class Controller
             return $this->addJob($runData);
         case 'salary':
             return $this->addSalary($runData);
+        case 'reportTo':
+            return $this->addReportTo($runData);
         case 'getEmergencyContact':
             $query = "SELECT * FROM hr_emergency_contact WHERE emp_id =:id"; 
             return $this->getData($runData,$query);
@@ -84,6 +88,12 @@ class Controller
             return $this->getData($runData,$query);
         case 'getSalary':
             $query = "SELECT * FROM hr_salary WHERE emp_id =:id"; 
+            return $this->getData($runData,$query);
+        case 'getSupervisor':
+            $query = "SELECT * FROM hr_report_to WHERE emp_id =:id AND type='Supervisor'"; 
+            return $this->getData($runData,$query);
+        case 'getSubordinate':
+            $query = "SELECT * FROM hr_report_to WHERE emp_id =:id AND type='Subordinate'"; 
             return $this->getData($runData,$query);
         case 'getJobTitles':
             $query = "SELECT * FROM hr_job_title"; 
@@ -104,8 +114,55 @@ class Controller
 }
 
 
+/*********************************************ADD REPORT TO******************************************************** */
 
-   //add emplyee
+private function addReportTo($runData)
+{
+
+                $query     = "INSERT INTO hr_report_to(emp_id, name, reporting_method, type) VALUES (:emp_id,:name, :reporting_method, :type)";
+                $statement = $this->pdo->prepare($query);
+                $statement->execute
+                    ([
+                        ':emp_id'              => $runData -> l,
+                        ':name'                => $runData -> b,
+                        ':reporting_method'    => $runData -> c,
+                        ':type'                => $runData -> d,
+                    ]);
+                        if ($statement->rowCount() > 0){
+                              return $this->responseData("success", 200, "Record created Successfully"); 
+                            }  
+                        else
+                            {
+                            return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                            }
+
+           
+}
+/*********************************************ADD REPORT TO******************************************************** */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*********************************************ADD SALARY******************************************************** */
+
    private function addSalary($runData)
     {
             switch ($runData->b) {

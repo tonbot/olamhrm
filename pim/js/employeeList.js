@@ -55,8 +55,30 @@ $('#employeeListTable tbody').on( 'click', '.action', function () {
   });
    
 
+  function delete_question(formData){
                 
-    
+    $.ajax({
+        url: "post/report_post.php",
+        type: "POST",
+        data: formData,   
+        encode:true,
+        success: function(data){
+         table.destroy();
+         console.log(data)
+          const res = JSON.parse(data);
+          if(res.data !='false'){
+            table2 = get_all_question()
+             return
+          }
+          
+        },
+        error: function(error){
+          console.log(error)
+        },
+  
+    });
+ 
+ }
 
 
 
