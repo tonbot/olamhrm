@@ -5,7 +5,11 @@ $(document).ready(function () {
     var table2;
     var table3;
 
-    table2 = $('#employeeListTable').DataTable(); //supervisor table
+    table2 = $('#employeeListTable').DataTable({
+        // "aoColumnDefs": [
+        //     { "bSortable": false, "aTargets": [ 0, 1, 2, 3 ] }, 
+        // ]
+    }); //supervisor table
     table3 = $('#employeeListTable2').DataTable(); //subordinate table
       
     $(".attachment-error").css("display", "none");
@@ -71,14 +75,59 @@ $(document).ready(function () {
         $("#specify").css("border-color", "rgba(0, 0, 0, 0.3)");
         is_visible = false
     });
+   
+ //SELECT ALL ASSIGNED SUPERVISOR
+    $("#selectAllSupervisor").click(function () {
+        $(".checkBoxAll1").prop('checked', $(this).prop('checked'));
+    });
 
-    // if($("#selectAll").is(':checked')){
-    //     $('input:checkbox').prop('checked', this.checked);
-    //      alert("ton");
-    //     };
+ //SELECT ALL ASSIGNED SUBORDINATe
+ $("#selectAllSubordinate").click(function () {
+    $(".checkBoxAll").prop('checked', $(this).prop('checked'));
+ });
+
+ //DELETE SELECTED ASSIGNED SUPERVISOR
+ $(".deleteSupervisor").click(function(){
+      var dataArray =  [];
+      $("input:checkbox[name=checkBoxAll1Arr]:checked").each(function() {
+        dataArray.push($(this).val());
+    });
+    if (dataArray.length == 0){
+        return;
+      }
+    // console.log(supervisorSelectArray);
+  let fd = {
+        a: "employeeDetails",
+        b: dataArray,
+        c: "Supervisor",
+        z: 'deleteReportTo',
+        k: "deleteCheckBoxSelected",
+        l: id,
+    }
+    putReportTo(fd);
+ });
 
 
-
+ //DELETE SELECTED ASSIGNED SUBORDINATE
+ $(".deleteSubordinate").click(function(){
+    var dataArray =  [];
+    $("input:checkbox[name=checkBoxAllArr]:checked").each(function() {
+        dataArray.push($(this).val());
+  });
+  if (dataArray.length == 0){
+    return;
+  }
+  // console.log(supervisorSelectArray);
+let fd = {
+      a: "employeeDetails",
+      b:  dataArray,
+      c: "Subordinate",
+      z: 'deleteReportTo',
+      k: "deleteCheckBoxSelected",
+      l: id,
+  }
+  putReportTo(fd);
+});
 
 
     //  table data
@@ -96,6 +145,7 @@ $(document).ready(function () {
             l: id,
         }
         return table2 = $('#employeeListTable').DataTable({
+            "ordering": false,
             "ajax": {
                 url: "/olamhrm/model/EkirsApi.php",
                 type: "POST",
@@ -110,7 +160,7 @@ $(document).ready(function () {
 
                //serial number
                "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-                $("td:first", nRow).html("<input type=checkbox value=" + (aData["id"]) + " >");
+                $("td:first", nRow).html("<input type=checkbox  class=checkboxAll1 name=checkBoxAll1Arr  value=" + (aData["id"]) + " >");
                return nRow;
             },
 
@@ -127,6 +177,7 @@ $(document).ready(function () {
             l: id,
         }
         return table3 = $('#employeeListTable2').DataTable({
+            "ordering": false,
             "ajax": {
                 url: "/olamhrm/model/EkirsApi.php",
                 type: "POST",
@@ -141,7 +192,7 @@ $(document).ready(function () {
 
               //serial number
               "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-                $("td:first", nRow).html("<input type=checkbox value=" + (aData["id"]) + " >");
+                $("td:first", nRow).html("<input type=checkbox class=checkboxAll name=checkBoxAllArr value=" + (aData["id"]) + " >");
                return nRow;
             },
 
@@ -242,7 +293,7 @@ $(document).ready(function () {
             data: fd,
             encode: true,
             success: function (data) {
-                // console.log(data);
+                //  console.log(data);
                 let response = JSON.parse(data);
                 if (response.code == "200") {
                     alert(response.message);

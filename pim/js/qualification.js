@@ -22,6 +22,7 @@ $(document).ready(function () {
     table2 = $('#educationTable').DataTable(); //subordinate table
     table3 = $('#skillTable').DataTable(); //supervisor table
     table4 = $('#languageTable').DataTable(); //subordinate table
+    table5 = $('#licenseTable').DataTable(); //subordinate table
 
     $(".attachment-error").css("display", "none");
     //set current page to active
@@ -80,12 +81,12 @@ $(document).ready(function () {
             d: $("#from").val().trim(),
             e: $("#to").val().trim(),
             f: $("#comment").val().trim(),
-            g: "workExperince",
+            g: "workExperience",
             k: "qualification",
             l: id,
         }
          console.log(fd)
-        // putQualification(fd);
+         putQualification(fd);
     });
     /********************************* Work Experience ends here************************************************ */
 
@@ -129,7 +130,7 @@ $(document).ready(function () {
             l: id,
         }
          console.log(fd)
-        // putQualification(fd);
+         putQualification(fd);
     });
     /********************************* EDUCATION************************************************ */
 
@@ -168,10 +169,10 @@ $(document).ready(function () {
             l: id,
         }
          console.log(fd)
-        // putQualification(fd);
+         putQualification(fd);
     });
     /********************************* SKILL************************************************ */
-
+      
 
     /********************************* LANGUAGE ************************************************ */
     //  cancelWorkExperience edit
@@ -209,27 +210,66 @@ $(document).ready(function () {
             l: id,
         }
          console.log(fd)
-        // putQualification(fd);
+         putQualification(fd);
     });
-    /********************************* SKILL************************************************ */
+    /********************************* LANGUAGE************************************************ */
 
 
+ /********************************* LICENSE ************************************************ */
+    //  cancelWorkExperience edit
+    $(".cancelLicense").click(function () {
+        $("input[type=text]").val("");
+        $(".contact_formLicense").css("display", "none");
+        $(".addLicense").show();
+        $("#license").css("border-color", "rgba(0, 0, 0, 0.3)");
+    });
+
+    //show contact form body
+    $(".addLicense").click(function () {
+        $(".contact_formLicense").css("display", "block");
+        $(this).css("display", "none");
+    });
+    
+    //SAVE WORK EXPERIENCE
+    $(".saveLicense").click(function () {
+        //get basic data
+        let licenseType = $("#licenseType").val();
+         (licenseType === "") ? $("#licenseType").css("border-color", "red") : ""
+        //check if important field are empty
+        if(licenseType === '') {
+            return;
+        }
+        // formData
+        let fd = {
+            a: "employeeDetails",
+            b: licenseType,
+            c: $("#licenseNumber").val().trim(),
+            d: $("#issuedDate").val().trim(),
+            e: $("#expiryDate").val().trim(),
+            g: "license",
+            k: "qualification",
+            l: id,
+        }
+         console.log(fd)
+         putQualification(fd);
+    });
+    /********************************* LICENSE ************************************************ */
 
 
 
 
     //  table data
-    // getSupervisor();
-    // getSubordinate(); 
+      getWorkExperience()
+      getSkill()
+      
 
+    /******************************************GET WORK Experience************************************************* */
 
-    /******************************************GET ASSIGNED SUPERVISOR DATA************************************************* */
-
-    function getSupervisor() {
+    function getWorkExperience() {
         table1.destroy();
         formData = {
             a: "employeeDetails",
-            k: "getSupervisor",
+            k: "getWorkExperience",
             l: id,
         }
         return table1 = $('#WorkExperienceTable').DataTable({
@@ -241,29 +281,68 @@ $(document).ready(function () {
             },
             columns: [
                 { "data": null },
-                { "data": "name" },
-                { "data": "reporting_method" },
+                { "data": "company"},
+                { "data": "job_title"},
+                { "data": "fromD"},
+                { "data": "toD"},
             ],
 
             //serial number
             "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-                $("td:first", nRow).html("<input type=checkbox value=" + (aData["id"]) + " >");
+                $("td:first", nRow).html("<b>" + (iDisplayIndex + 1) + " </b>");
                 return nRow;
             },
 
         });
     }
     /******************************************GET ASSIGNED SUPERVISOR DATA ENDS HERE************************************************* */
+   
+    getEducation()
 
+    
     /******************************************GET ASSIGNED SUBORDINATE DATA************************************************* */
-    function getSubordinate() {
+    function getEducation() {
+        table2.destroy();
+        formData = {
+            a: "employeeDetails",
+            k: "getEducation",
+            l: id,
+        }
+        return table2 = $('#educationTable').DataTable({
+            "ajax": {
+                url: "/olamhrm/model/EkirsApi.php",
+                type: "POST",
+                dataSrc: "",
+                data: formData
+            },
+            columns: [
+                { "data": null},
+                { "data": "level"},
+                { "data": "year"},
+                { "data": "score"},
+            ],
+
+            //serial number
+            "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                $("td:first", nRow).html("<b>" + (iDisplayIndex + 1) + " </b>");
+                return nRow;
+            },
+
+        });
+    }
+    /***
+     * ***************************************GET ASSIGNED SUBORDINATE DATA ENDS HERE************************************************* */
+     getLanguage()
+ 
+    /******************************************GET ASSIGNED SUBORDINATE DATA************************************************* */
+    function getSkill() {
         table3.destroy();
         formData = {
             a: "employeeDetails",
-            k: "getSubordinate",
+            k: "getSkill",
             l: id,
         }
-        return table3 = $('#employeeListTable2').DataTable({
+        return table3 = $('#skillTable').DataTable({
             "ajax": {
                 url: "/olamhrm/model/EkirsApi.php",
                 type: "POST",
@@ -272,19 +351,83 @@ $(document).ready(function () {
             },
             columns: [
                 { "data": null },
-                { "data": "name" },
-                { "data": "reporting_method" },
+                { "data": "skill" },
+                { "data": "year_of_experience" },
             ],
 
             //serial number
             "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-                $("td:first", nRow).html("<input type=checkbox value=" + (aData["id"]) + " >");
+                $("td:first", nRow).html("<b>" + (iDisplayIndex + 1) + " </b>");                
                 return nRow;
             },
 
         });
     }
     /******************************************GET ASSIGNED SUBORDINATE DATA ENDS HERE************************************************* */
+ /******************************************GET ASSIGNED SUBORDINATE DATA************************************************* */
+ function getLanguage() {
+    table4.destroy();
+    formData = {
+        a: "employeeDetails",
+        k: "getLanguage",
+        l: id,
+    }
+    return table4 = $('#languageTable').DataTable({
+        "ajax": {
+            url: "/olamhrm/model/EkirsApi.php",
+            type: "POST",
+            dataSrc: "",
+            data: formData
+        },
+        columns: [
+            { "data": null },
+            { "data": "language" },
+            { "data": "fluency" },
+            { "data": "competency" },
+            { "data": "comment" },
+        ],
+
+        //serial number
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html("<b>" + (iDisplayIndex + 1) + " </b>");
+            return nRow;
+        },
+
+    });
+}
+/******************************************GET ASSIGNED SUBORDINATE DATA ENDS HERE************************************************* */
+getLicense()
+function getLicense() {
+    table5.destroy();
+    formData = {
+        a: "employeeDetails",
+        k: "getLicense",
+        l: id,
+    }
+    return table5 = $('#licenseTable').DataTable({
+        "ajax": {
+            url: "/olamhrm/model/EkirsApi.php",
+            type: "POST",
+            dataSrc: "",
+            data: formData
+        },
+        columns: [
+            { "data": null },
+            { "data": "license_type" },
+            { "data": "license_number"},
+            { "data": "issued_date" },
+            { "data": "expiry_date" },
+        ],
+
+        //serial number
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+            $("td:first", nRow).html("<b>" + (iDisplayIndex + 1) + " </b>");
+            return nRow;
+        },
+
+    });
+}
+/******************************************GET ASSIGNED SUBORDINATE DATA ENDS HERE************************************************* */
 
     /******************************************UPLOAD ATTACHMENT************************************************* */
 
@@ -308,7 +451,7 @@ $(document).ready(function () {
         fd.append("b", attachment);
         fd.append("c", id);
         fd.append("d", description);
-        fd.append("k", "rAttachment");
+        fd.append("k", "qAttachment");
         // console.log(fd);
         uploadAttachment(fd);
     });
@@ -351,14 +494,14 @@ $(document).ready(function () {
             data: fd,
             encode: true,
             success: function (data) {
-                //     // console.log(data);
-                //     let response = JSON.parse(data);
-                //     if (response.code == "200") {
-                //         alert(response.message);
-                //     }
-                //    //  table data
-                //     getSupervisor();
-                //     getSubordinate(); 
+           console.log(data);
+                    let response = JSON.parse(data);
+                    if (response.code == "200") {
+                        alert(response.message);
+                    }
+                   //  table data
+                    // getSupervisor();
+                    // getSubordinate(); 
             },
             error: function (error) {
                 /**on error function */

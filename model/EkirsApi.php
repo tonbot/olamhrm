@@ -168,6 +168,13 @@ if (isset($_GET["s"])) {
     $s = $_GET["s"];
 }
 
+$z = "";
+if (isset($_POST["z"])) {
+    $z = $_POST["z"];
+}
+if (isset($_GET["z"])) {
+    $z = $_GET["z"];
+}
 /////////
 $draw = "";
 if (isset($_GET["draw"])) {
@@ -202,6 +209,7 @@ $runData->p = $p;
 $runData->q = $q;
 $runData->r = $r;
 $runData->s = $s;
+$runData->z = $z;
 
 $response = $controller -> runApp($runData);
 echo json_encode($response);         

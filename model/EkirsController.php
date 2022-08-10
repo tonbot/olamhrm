@@ -31,6 +31,8 @@ class Controller
                return $this->getEmployee();
             case 'employeeDetails':
                 return $this->employeeDetails($runData);
+            case 'admin':
+                return $this->performAdmin($runData);
             default :
             $resp = new stdClass();
             $resp->message = "Something is definitely not right!!!";
@@ -39,6 +41,45 @@ class Controller
             return $resp;
          }
    }//end of run app
+
+
+
+private function performAdmin($runData){ //only working for admin
+    switch ($runData->k) {
+        case 'jobTitle':
+              return $this->addJobTitle($runData);
+        case 'general':
+                return $this->addGeneral($runData);
+        case 'getJobTitle':
+            $query ="SELECT * FROM hr_job_title";
+            return $this->getData1($query);
+        case 'getCategory':
+            $query ="SELECT * FROM hr_job_category";
+            return $this->getData1($query); 
+        case 'getPayGrade':
+            $query ="SELECT * FROM hr_pay_grade";
+            return $this->getData1($query);
+        case 'getSubUnit':
+            $query ="SELECT * FROM hr_sub_unit";
+            return $this->getData1($query);      
+        case 'deleteJobTitle':
+            $query ="DELETE FROM hr_job_title WHERE id=:id";
+            return $this->deleteData2($runData,$query ); 
+        case 'deleteCategory':
+            $query ="DELETE FROM hr_job_category WHERE id=:id";
+            return $this->deleteData2($runData,$query );  
+        case 'deletePayGrade':
+            $query ="DELETE FROM hr_pay_grade WHERE id=:id";
+            return $this->deleteData2($runData,$query ); 
+        case 'deleteSubUnit':
+            $query ="DELETE FROM hr_sub_unit WHERE id=:id";
+            return $this->deleteData2($runData,$query );    
+        default:
+            # code...
+            break;
+    }
+}
+
 
    
    private function employeeDetails($runData){
@@ -65,6 +106,10 @@ class Controller
             return $this->uploadAttachment($runData,$runData->k);
         case 'rAttachment':
             return $this->uploadAttachment($runData,$runData->k);
+        case 'qAttachment':
+            return $this->uploadAttachment($runData,$runData->k);
+        case 'mAttachment':
+            return $this->uploadAttachment($runData,$runData->k);
         case 'emergencyContact':
              return $this->addEmergencyContact($runData);
         case 'nok':
@@ -77,6 +122,10 @@ class Controller
             return $this->addSalary($runData);
         case 'reportTo':
             return $this->addReportTo($runData);
+        case 'qualification':
+                return $this->addQualification($runData);
+        case 'membership':
+                return $this->addMembership($runData);
         case 'getEmergencyContact':
             $query = "SELECT * FROM hr_emergency_contact WHERE emp_id =:id"; 
             return $this->getData($runData,$query);
@@ -95,6 +144,24 @@ class Controller
         case 'getSubordinate':
             $query = "SELECT * FROM hr_report_to WHERE emp_id =:id AND type='Subordinate'"; 
             return $this->getData($runData,$query);
+        case 'getWorkExperience':
+                $query = "SELECT * FROM hr_work_experience WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
+        case 'getSkill':
+                $query = "SELECT * FROM hr_skill WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
+        case 'getEducation':
+                $query = "SELECT * FROM hr_education WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
+        case 'getLanguage':
+                $query = "SELECT * FROM hr_language WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
+        case 'getLicense':
+                $query = "SELECT * FROM hr_license WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
+         case 'getMembership':
+                $query = "SELECT * FROM hr_membership WHERE emp_id =:id"; 
+                return $this->getData($runData,$query);
         case 'getJobTitles':
             $query = "SELECT * FROM hr_job_title"; 
             return $this->getData3($runData, $query, "getJobTitles");
@@ -106,13 +173,270 @@ class Controller
             return $this->getData3($runData, $query,'getSubUnits');
         case 'getLocations':
             $query = "SELECT * FROM hr_location"; 
-            return $this->getData3($runData, $query,'getLocations');   
+            return $this->getData3($runData, $query,'getLocations'); 
+        case 'deleteCheckBoxSelected':
+            return $this->deleteData($runData);  
         default:
           return "oops Something went wrong";
             break;
     }
 }
 
+
+
+
+private function addJobTitle($runData){
+    $query = "INSERT INTO hr_job_title(job_title, job_description) VALUES (:job_title, :job_description)";
+    $statement = $this->pdo->prepare($query);
+    $statement->execute
+        ([
+            ':job_title'             => $runData -> b,
+            ':job_description'       => $runData -> c,
+        ]);
+            if ($statement->rowCount() > 0){
+                  return "Record created Successfully"; 
+                }  
+            else
+                {
+                  return "Record Failed to save ";  
+                }
+}
+
+private function addGeneral($runData){
+     switch ($runData->z) {
+        case 'category':
+            $query = "INSERT INTO hr_job_category(category) VALUES (:name)";
+            break;
+        case 'payGrade':
+            $query = "INSERT INTO hr_pay_grade(pay_grade) VALUES (:name)";
+            break;
+        case 'SubUnit':
+            $query = "INSERT INTO hr_sub_unit(sub_unit) VALUES (:name)";
+            break;
+        
+        default:
+            # code...
+            break;
+     }
+   
+    $statement = $this->pdo->prepare($query);
+    $statement->execute([ ':name' => $runData -> b, ]);
+            if ($statement->rowCount() > 0){
+                  return "Record created Successfully"; 
+                }  
+            else
+                {
+                  return "Record Failed to save ";  
+                }
+}
+
+private function deleteData2($runData,$query){
+            foreach($runData->b as $data){
+                $statement = $this->pdo->prepare($query);
+                $statement->execute([':id' => $data]);                       
+            }
+            if ($statement->rowCount() > 0){
+                return "Record Deleted Successfully"; 
+              }  
+          else
+              {
+              return  "Record cannot be deleted!!!" ;  
+              } 
+
+}
+
+
+
+/***********************************************DELETE DATA********************************************* */
+
+private function deleteData($runData){
+    switch ($runData->z) {
+        case 'deleteReportTo': //this delete selected checkbox from either supervisor or subordinate
+            foreach($runData->b as $data){
+
+                $query     = "DELETE FROM hr_report_to WHERE emp_id=:emp_id AND id=:id AND type =:type";
+                $statement = $this->pdo->prepare($query);
+                $statement->execute
+                    ([
+                        ':emp_id'              => $runData -> l,
+                        ':id'                  => $data,
+                        ':type'                => $runData -> c,
+                    ]);
+                        
+            }
+            if ($statement->rowCount() > 0){
+                return $this->responseData("success", 200, "Record Deleted Successfully"); 
+              }  
+          else
+              {
+              return $this->responseData("error", 400, "Record cannot be deleted!!!" );  
+              } 
+
+           case 'deleteEmployee': //this delete selected checkbox employee
+                foreach($runData->b as $data){
+
+                    $query     = "DELETE FROM hr_employee WHERE id=:id ";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':id'                  => $data,
+                        ]);
+                            
+                }
+                if ($statement->rowCount() > 0){
+                    return $this->responseData("success", 200, "Record Deleted Successfully"); 
+                }  
+            else
+                {
+                return $this->responseData("error", 400, "Record cannot be deleted!!!" );  
+                } 
+            
+        default:
+            return "error";
+            break;
+    }
+}
+
+/***********************************************DELETE ENDS DATA********************************************* */
+
+
+/*********************************************ADD MEMBERSHIP******************************************************** */
+
+private function addMembership($runData)
+{       
+                    $query = "INSERT INTO hr_membership(emp_id, membership, sub_pay_by, sub_amount, currency, sub_comm_date, sub_renewal_date ) VALUES (:emp_id,:membership,:sub_pay_by, :sub_amount,:currency, :sub_comm_date, :sub_renewal_date)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'             => $runData -> l,
+                            ':membership'         => $runData -> b,
+                            ':sub_pay_by'         => $runData -> c,
+                            ':sub_amount'         => $runData -> d,
+                            ':currency'           => $runData -> e,
+                            ':sub_comm_date'      => $runData -> f,
+                            ':sub_renewal_date'   => $runData -> g,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+    
+             
+            
+}
+/*********************************************ADD MEMBERSHIP******************************************************** */
+
+/*********************************************ADD QUALIFICATION******************************************************** */
+
+private function addQualification($runData)
+{       
+               switch ($runData->g) {
+                case 'workExperience': //work experience
+                    $query = "INSERT INTO hr_work_experience(emp_id, company, job_title, fromD, toD, comment) VALUES (:emp_id,:company,:job_title, :from,:to, :comment)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'      => $runData -> l,
+                            ':company'     => $runData -> b,
+                            ':job_title'   => $runData -> c,
+                            ':from'        => $runData -> d,
+                            ':to'          => $runData -> e,
+                            ':comment'     => $runData -> f,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+    
+                 case 'education': //education
+    
+                    $query = "INSERT INTO hr_education(emp_id, level, institute, major, year, score, start_date,end_date ) VALUES (:emp_id,:level,:institute, :major, :year, :score, :startDate, :endDate)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'      => $runData -> l,
+                            ':level'     => $runData -> b,
+                            ':institute'   => $runData -> c,
+                            ':major'        => $runData -> d,
+                            ':year'        => $runData -> e,
+                            ':score'          => $runData -> f,
+                            ':startDate'     => $runData -> h,
+                            ':endDate'     => $runData -> i,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+                 case 'skill': //skill
+                    $query = "INSERT INTO hr_skill(emp_id, skill, year_of_experience, comment) VALUES (:emp_id,:skill,:year_of_experience, :comment)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'      => $runData -> l,
+                            ':skill'     => $runData -> b,
+                            ':year_of_experience'   => $runData -> c,
+                            ':comment'        => $runData -> d,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+                 case 'language': //language
+                    $query = "INSERT INTO hr_language(emp_id, language, fluency, competency, comment) VALUES (:emp_id,:language,:fluency, :competency,:comment)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'      => $runData -> l,
+                            ':language'     => $runData -> b,
+                            ':fluency'   => $runData -> c,
+                            ':competency'        => $runData -> d,
+                            ':comment'        => $runData -> e,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+                 case 'license': //license
+                    $query = "INSERT INTO hr_license(emp_id, license_type, license_number, issued_date, expiry_date) VALUES (:emp_id,:license_type,:license_number, :issued_date,:expiry_date)";
+                    $statement = $this->pdo->prepare($query);
+                    $statement->execute
+                        ([
+                            ':emp_id'      => $runData -> l,
+                            ':license_type'     => $runData -> b,
+                            ':license_number'   => $runData -> c,
+                            ':issued_date'        => $runData -> d,
+                            ':expiry_date'        => $runData -> e,
+                        ]);
+                            if ($statement->rowCount() > 0){
+                                  return $this->responseData("success", 200, "Record created Successfully"); 
+                                }  
+                            else
+                                {
+                                return $this->responseData("error", 400, "Something wrong, Record cannot be created!!!" );  
+                                }
+
+                default:
+               return "failed";
+                    break;
+               }
+            
+}
+/*********************************************ADD QUALIFICATION******************************************************** */
 
 /*********************************************ADD REPORT TO******************************************************** */
 
@@ -139,25 +463,6 @@ private function addReportTo($runData)
            
 }
 /*********************************************ADD REPORT TO******************************************************** */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -251,6 +556,18 @@ private function getData3($runData, $query, $module) {
     return "";
 }
 
+private function getData1($query) {   
+    $result = $this->pdo->prepare($query);
+    $result->execute([]);
+    if ($result -> rowCount() > 0)
+    {
+        $result -> setFetchMode(PDO::FETCH_ASSOC);
+        $result = $result -> fetchall();
+        $response = $result;
+        return $response;
+    }
+    return "";
+}
 
 function getData2($runData, $query) {   
     $result = $this->pdo->prepare($query);
@@ -521,16 +838,21 @@ private function addJob($runData){
                         ':emp_middle_name' => $runData -> e
                     ]);
                         if ((($statement->rowCount()) > 0) && (($runData -> b) === "true")){
+                             //FETCH THE ID OF THE JUST INSERTED EMPLOYEE
+                             $query  = "SELECT id FROM hr_employee WHERE employee_id ='$employee_id' ";
+                             $respEntry = $this->checkEntry($query);
                             //create user login
                             $respCreateUserlogin = $this->createUserLogin($runData);
-                                if ($respCreateUserlogin == "true"){
-                                    return $this->responseData("success", 200, "employee added successfully and User login is created!!!");  
+                                if ($respCreateUserlogin == "true"){  
+                                    return $this->responseData("success", $respEntry->resultData, "employee added successfully and User login is created!!!");  
                                 }else{
-                                    return $this->responseData("success", 200, "employee added successfully but error in creating user login");  
+                                    return $this->responseData("success", $respEntry->resultData, "employee added successfully but error in creating user login");  
                                 }
                             }
                         if ((($statement->rowCount()) > 0) && (($runData -> b) === "false")){
-                            return $this->responseData("success", 200, "employee added successfully, User login not created!!!" );
+                            $query  = "SELECT id FROM hr_employee WHERE employee_id ='$employee_id' ";
+                            $respEntry = $this->checkEntry($query);
+                            return $this->responseData("success", $respEntry->resultData, "employee added successfully, User login not created!!!" );
                             }  
                         else
                             {
@@ -547,7 +869,9 @@ private function addJob($runData){
 
 
 
-private function createUserLogin($runData){
+
+
+    private function createUserLogin($runData){
     $query     = "INSERT INTO hr_user(username, password, role_id, status) VALUES (:username, :password, :role_id, :status)";
     $statement = $this->pdo->prepare($query);
     $statement->execute

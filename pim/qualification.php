@@ -48,15 +48,20 @@
     display: none !important;
 }
 
-table thead tr th:nth-child(1){
+table thead tr th:nth-child(1) {
     /* background-color: var(--nav-hover-background-color); */
-    width: 2px !important; 
+    width: 2px !important;
 }
-.col-10 input[type="checkbox"]{
-      width: 15px !important; 
-  }
-.contact_formEducation, .contact_formSkill,.contact_formLanguage {
-    display:none;
+
+.col-10 input[type="checkbox"] {
+    width: 15px !important;
+}
+
+.contact_formEducation,
+.contact_formSkill,
+.contact_formLanguage,
+.contact_formLicense {
+    display: none;
 }
 </style>
 
@@ -83,12 +88,16 @@ table thead tr th:nth-child(1){
             <!-- Personal info  -->
             <div class="col-10 col10-container">
                 <!-- col10-container -->
-                <?php include_once('workExperience.php') ?> <!--Work Experience  -->
-                <?php include_once('education.php') ?> <!--Education -->
-                <?php include_once('skill.php') ?> <!--Skill -->
-                <?php include_once('language.php') ?> <!--Skill -->
-
-        
+                <?php include_once('workExperience.php') ?>
+                <!--Work Experience  -->
+                <?php include_once('education.php') ?>
+                <!--Education -->
+                <?php include_once('skill.php') ?>
+                <!--Skill -->
+                <?php include_once('language.php') ?>
+                <!--Skill -->
+                <?php include_once('license.php') ?>
+                <!--Skill -->
                 <?php include_once('addAttachment.php') ?>
                 <!-- add attachment -->
             </div><!-- col 10 ends here -->

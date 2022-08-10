@@ -116,8 +116,8 @@ $(document).ready(function () {
         if(data != null && data !=""){
            let response = JSON.parse(data); //parse response 
            setDefaultBorder(); 
-           console.log(response.message)
-           window.location.href="/olamhrm/pim/employeeDetails.php?a="+employee_Id;
+           console.log(response.code)
+           window.location.href="/olamhrm/pim/employeeDetails.php?a="+response.code[0].id;
         }
        
         

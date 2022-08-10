@@ -15,6 +15,7 @@ $(document).ready(function() {
             a :  "employeeLIst",
         }
         return table2 = $('#employeeListTable').DataTable({
+          "ordering": false,
             "ajax": {
                 url: "/olamhrm/model/EkirsApi.php",
                 type: "POST",
@@ -40,7 +41,7 @@ $(document).ready(function() {
 
             //serial number
             "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-              $("td:first", nRow).html("<input type=checkbox value=" + (aData["id"]) + " >");
+              $("td:first", nRow).html("<input type=checkbox class=checkBoxAll name=checkBoxAllArr value=" + (aData["id"]) + " >");
              return nRow;
           },
 
@@ -55,33 +56,56 @@ $('#employeeListTable tbody').on( 'click', '.action', function () {
   });
    
 
-  function delete_question(formData){
-                
-    $.ajax({
-        url: "post/report_post.php",
-        type: "POST",
-        data: formData,   
-        encode:true,
-        success: function(data){
-         table.destroy();
-         console.log(data)
-          const res = JSON.parse(data);
-          if(res.data !='false'){
-            table2 = get_all_question()
-             return
-          }
-          
-        },
-        error: function(error){
-          console.log(error)
-        },
-  
+
+//SELECT ALL ASSIGNED SUBORDINATE
+ $("#selectAllEmployee").click(function () {
+    $(".checkBoxAll").prop('checked', $(this).prop('checked'));
+ });
+
+ //DELETE SELECTED ASSIGNED SUPERVISOR
+ $(".deleteEmployee").click(function(){
+      var dataArray =  [];
+      $("input:checkbox[name=checkBoxAllArr]:checked").each(function() {
+        dataArray.push($(this).val());
     });
- 
- }
+    if (dataArray.length == 0){
+        return;
+      }
+    // console.log(supervisorSelectArray);
+  let fd = {
+        a: "employeeDetails",
+        b: dataArray,
+        z: 'deleteEmployee',
+        k: "deleteCheckBoxSelected",
+    }
+    putReportTo(fd);
+ });
 
 
-
+   //register employee function
+   function putReportTo(fd) {
+    // console.log(fd);
+    $.ajax({
+        url: "/olamhrm/model/EkirsApi.php",
+        type: "POST",
+        data: fd,
+        encode: true,
+        success: function (data) {
+            //  console.log(data);
+            let response = JSON.parse(data);
+            if (response.code == "200") {
+                alert(response.message);
+            }
+           //  table data
+           get_all_employee();
+  
+        },
+        error: function (error) {
+            /**on error function */
+            console.log(error);
+        },
+    });
+}
 
 
 

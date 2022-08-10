@@ -109,7 +109,7 @@
     left: 0;
     background-color:rgb(168, 81, 31);
     width: 100%;
-    z-index: 1;
+    z-index: 555;
     padding: 0px 40px;
   }
 

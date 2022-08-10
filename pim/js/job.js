@@ -231,7 +231,7 @@ $(document).ready(function () {
             encode: true,
             success: function (data) {
 
-                if (data == "true" || data == "Job Details Added Successfully" ){
+                if (data == "true" || data === "Job Details Added Successfully"){
                     alert("Update is successful!" + "  " + "Page will reload to see the update.");
                        location.reload();
                        return;

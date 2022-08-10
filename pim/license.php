@@ -1,79 +1,67 @@
-<div class="card shadow">
+<div class="card mt-5 shadow">
     <!-- card for Assigned Supervisors -->
     <div class="card-header">
-        <h6 class="changeTitle">Work Experience</h6>
+        <h6 class="changeTitle">Add License</h6>
     </div>
     <div class="card-body ">
-        <button class="btn btn-success addWorkExperience">Add</button>
-        <div class="contact_form">
+        <button class="btn btn-success addLicense">Add</button>
+        <div class="contact_formLicense">
             <div class="row">
                 <div class="col-2">
-                    <span> Company <em>*</em> </span>
+                    <span> License Type <em>*</em> </span>
                 </div>
                 <div class="col-10">
                     <div class="second-row">
-                        <input type="text" id="company">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-2">
-                    <span> Job Title <em>*</em> </span>
-                </div>
-                <div class="col-10">
-                    <div class="second-row">
-                        <input type="text" id="job_title">
-                    </div>
-                </div>
-            </div>
-            <div class="row ">
-                <div class="col-2">
-                    <span> From </span>
-                </div>
-                <div class="col-10">
-                    <div class="second-row">
-                        <input type="text" id="from" class="datepickers" placeholder = "yyyy-mm-dd"><i class="fa fa-calendar pl-1 text-secondary" ></i>
+                        <input type="text" id="licenseType">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-2">
-                    <span> To  </span>
+                    <span>License Number</span>
                 </div>
                 <div class="col-10">
                     <div class="second-row">
-                        <input type="text" id="to"  class="datepickers" placeholder = "yyyy-mm-dd"><i class="fa fa-calendar pl-1 text-secondary" ></i>
+                         <input type="text" id="licenseNumber">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-2">
-                    <span> Comment </span>
+                    <span>Issued Date</span>
                 </div>
                 <div class="col-10">
                     <div class="second-row">
-                        <textarea id="comment" name="" rows="4" cols="35">
-                                        </textarea>
+                         <input class= "datepickers" type="text" id="issuedDate">
                     </div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-2">
+                    <span>Expiry Date</span>
+                </div>
+                <div class="col-10">
+                    <div class="second-row">
+                         <input class= "datepickers" type="text" id="expiryDate">
+                    </div>
+                </div>
+            </div>
             <hr />
             <div>
-                <button class="btn btn-success saveWorkExperince">Save</button>
-                <button class="btn btn-secondary cancelWorkExperience">Cancel</button>
+                <button class="btn btn-success saveLicense">Save</button>
+                <button class="btn btn-secondary cancelLicense">Cancel</button>
             </div>
         </div><!-- contact_form ends here -->
         <div class="table-container">
             <!-- record list container start here-->
-            <table class="table table-bordered table-center  table-striped table-hover" id="WorkExperienceTable">
+            <table class=" mt-2 table table-bordered table-center  table-striped table-hover" id="licenseTable">
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Company</th>
-                        <th>Job Title</th>
-                        <th>From </th>
-                        <th>To</th>
+                        <th>License Type</th>
+                        <th>License Number</th>
+                        <th>Issued Date</th>
+                        <th>Expiry Date</th>
                     </tr>
                 </thead>
                 <tbody>

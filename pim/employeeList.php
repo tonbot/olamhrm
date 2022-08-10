@@ -30,12 +30,12 @@
             <!-- card body -->
             <div class="card-body">
                 <button class="btn btn-primary shadow addnew"><a href="/olamhrm/pim/addEmployee.php">Add New Employee</a></button>
-                <button class="btn btn-danger shadow">Delete Employee</button>
+                <button class="btn btn-danger shadow deleteEmployee">Delete Employee</button>
                 <div class="table-container">
                 <table class="table table-bordered table-center  table-striped table-hover" id="employeeListTable">
                         <thead>
                                 <tr>
-                                    <th><input type="checkbox"></th>
+                                    <th><input type="checkbox" id='selectAllEmployee'></th>
                                     <th>id</th>
                                     <th>Fist Name </th>
                                     <th>Middle Name</th>

@@ -27,22 +27,22 @@
         <!-- Load font awesome icons -->
         <div class="header-navbar">
             <div class="subnav">
-                <button class="subnavbtn a">Admin <i class="fa fa-caret-down ml-2"></i></button>
+                <button class="subnavbtn a admin_header">Admin <i class="fa fa-caret-down ml-2"></i></button>
                 <div class="subnav-content">
 
-                    <button class="second-level">User Management <i class="fa fa-caret-down ml-2"></i>
+                    <button class="second-level user_header">User Management <i class="fa fa-caret-down ml-2"></i>
                         <div class="third-level">
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Users</a>
+                            <a href='/olamhrm/admin/usersManagement.php'>Users</a>
                         </div>
                     </button>
 
-                    <button class="second-level">Job<i class="fa fa-caret-down ml-2"></i>
+                    <button class="second-level job_header">Job<i class="fa fa-caret-down ml-2"></i>
                         <div class="third-level">
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Job Titles</a>
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Pay Grades</a>
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Employment Status</a>
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Job Categories</a>
-                            <a href="http://" target="_blank" rel="noopener noreferrer">Work shift</a>
+                            <a href='/olamhrm/admin/jobTitle.php'>Job Titles</a>
+                            <a href='/olamhrm/admin/payGrades.php'>Pay Grades</a>
+                            <a href='/olamhrm/admin/subUnit.php'>Sub Unit</a>
+                            <a href="/olamhrm/admin/categories.php">Job Categories</a>
+                            <!-- <a href="http://">Work shift</a> -->
                         </div>
                     </button>
 
@@ -54,7 +54,7 @@
                         </div>
                     </button>
 
-                    <button class="second-level">Qualifications<i class="fa fa-caret-down ml-2"></i>
+                    <!-- <button class="second-level">Qualifications<i class="fa fa-caret-down ml-2"></i>
                         <div class="third-level">
                             <a href="http://" target="_blank" rel="noopener noreferrer">Skills</a>
                             <a href="http://" target="_blank" rel="noopener noreferrer">Education</a>
@@ -77,7 +77,7 @@
                             <a href="http://" target="_blank" rel="noopener noreferrer">playerww</a>
                             <a href="http://" target="_blank" rel="noopener noreferrer">boywww</a>
                         </div>
-                    </button>
+                    </button> -->
 
                 </div>
             </div>

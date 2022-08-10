@@ -1,0 +1,134 @@
+:root {
+  /* change the values below to your colors from your palette */
+  --primary-color: #393d3f;
+  --secondary-color: #546a7b;
+  --accent1-color: #62929e;
+  --accent2-color: #fdfdff;
+  --accent3-color: #c6c5b9;
+  --accent4-color: #c6c5b9;
+  --subnav-background-color-fade: rgba(168, 81, 31, 0.726);
+  --subnav-background-color: rgba(168, 81, 31);
+
+  /* change the values below to your chosen font(s) */
+  --heading-font: "Fira Sans", sans-serif;
+  --paragraph-font: "Source Sans Pro", sans-serif;
+
+  /* these colors below should be chosen from among your palette colors above */
+  --headline-color-on-white: #393d3f; /* headlines on a white background */
+  --headline-color-on-color: #fdfdff; /* headlines on a colored background */
+  --paragraph-color-on-white: #393d3f; /* paragraph text on a white background */
+  --paragraph-color-on-color: #fdfdff; /* paragraph text on a colored background */
+  --paragraph-background-color: #393d3f;
+  --nav-link-color: #fdfdff;
+  --nav-background-color: #393d3f;
+  --nav-hover-link-color: #546a7b;
+  --nav-hover-background-color: #fdfdff;
+}
+body {
+  overflow-x: hidden;
+}
+.mother-container {
+  margin: 40px 50px;
+  width: 1500px;
+  overflow-x: hidden;
+  padding-right: 230px;
+}
+.card {
+  background-color: rgba(0, 0, 0, 0.021);
+}
+.card-body {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.addnew a{
+    color: white;
+    text-decoration: none;
+}
+table th {
+  font-size: 12px;
+}
+table td {
+  font-size: 12px;
+  font-weight: bold;
+}
+table thead tr th:nth-child(1){
+    /* background-color: var(--nav-hover-background-color); */
+    width: 2px !important; 
+}
+table tbody tr td:nth-child(1){
+    width: 2px !important; 
+}
+thead {
+  background-color: var(--subnav-background-color);
+  color: #fff;
+}
+.btn.btn-primary.shadow-sm:hover {
+  box-shadow: 5px 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+.pagination {
+  font-size: 12px !important;
+}
+.dataTables_info {
+  font-size: 12px !important;
+}
+.dataTables_length {
+  font-size: 12px !important;
+  display: none;
+}
+tr.odd {
+  padding: 3px !important;
+}
+.action{
+    background-color:var(--subnav-background-color);
+    border: 0px;
+    outline: 0px;
+    padding: 3px 4px;
+}
+.action:hover{
+    background-color:var(--secondary-color)
+}
+.action:focus{
+    background-color:var(--secondary-color);
+    border: 0px;
+  outline: 0px;
+}
+.row {
+  margin-top: 15px;
+}
+
+.col-10 input,
+.col-10 select,
+.col-10 span {
+  border-color: rgba(0, 0, 0, 0.3);
+  border-width: 1px;
+  padding-left: 5px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.8);
+  width: 220px;
+}
+
+.col-10 input:focus,
+.col-10 select:focus, .col-10 textarea:focus{
+  border-width: 1px;
+  outline: 0px;
+}
+
+.col-10 select {
+  padding: 3px 15px;
+}
+
+.col-10 input[type="file"] {
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+em{
+  color: red;
+}
+@media screen and (max-width: 1300px) {
+
+    body {
+        overflow-x: visible;
+      }
+  }
