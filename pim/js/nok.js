@@ -107,8 +107,8 @@ $(document).ready(function () {
         k: "nok",
         l: id,
       };
-      console.log(fd);
-     addnok(fd);
+      //console.log(fd);
+      addnok(fd);
     });
   
 
@@ -184,6 +184,7 @@ $(document).ready(function () {
         encode: true,
         success: function (data) {
           alert(data);
+          getnok()
         },
         error: function (error) {
           /**on error function */

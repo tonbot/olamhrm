@@ -1,5 +1,7 @@
 <?php
     include_once('resources/include.php'); 
+
+   // print_r($response)
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +15,21 @@
     <link rel="shortcut icon" href="image/ekirs.ico">
     <link rel="stylesheet" href="resources/customCss/index.css">
     <script src="resources/customJs/index.js"></script>
+    <style>
+        #message{
+            color:red;
+            font-size:13px;
+            text-align:center;
+            padding: 8px ;
+        }
+    </style>
 </head>
 
 <body>
+
     <div class="motherContainer">
         <div class="hasChildren">
-            <!-- <div class="text-center"><img src="image/ekirs.png" width="120px" alt=""> </div> -->
+          <!-- <div class="text-center"><img src="image/ekirs.png" width="120px" alt=""> </div>  -->
             <div class="titleContainer">Welcome,</div>
             <div class="title2">Please continue to login.</div>
             <div class="frmContainer">

@@ -1,30 +1,32 @@
-
-<!-- <?php 
-//   session_start();
-//  if(isset($_SESSION["DATA"])){
-//     $rank = $_SESSION["DATA"]["rank"];
-//  }else{
-//     header("Location: /olamhrm/index.php");
-//  }
+<?php 
+    include_once('model/EkirsController.php'); 
+    $controller=new Controller();
+    if(isset($_SESSION["a"]) && isset($_SESSION["b"]) && $_SESSION["a"] != "" && $_SESSION["b"] != "" ){
+      $responseModule = $controller -> getModule();
+    }else{
+        header("Location:/olamhrm/index.php");
+    }
 ?>
-    <script>
-        var rank=
-        switch (rank) {
-            case Admin:
-                $("a, b, c, d, e, f").css("display", "block");
-                break;
-                
-            default:
-                break;
-        }
-    </script> -->
+   
 
     <header class="header">
+       <div class="header-container">
+            <img src="/olamhrm/resources/images/ekirs.png" alt="" width="100">
+            <span>Human Resources Management</span>
+        </div>
+       <!-- Load font awesome icons  -->
+        <div class="header-navbar">
+            <?php echo $responseModule;?>
+        </div>
+    </header>
+
+
+    <!-- <header class="header">
         <div class="header-container">
             <img src="/olamhrm/resources/images/ekirs.png" alt="" width="100">
             <span>Human Resources Management</span>
         </div>
-        <!-- Load font awesome icons -->
+        Load font awesome icons 
         <div class="header-navbar">
             <div class="subnav">
                 <button class="subnavbtn a admin_header">Admin <i class="fa fa-caret-down ml-2"></i></button>
@@ -42,7 +44,7 @@
                             <a href='/olamhrm/admin/payGrades.php'>Pay Grades</a>
                             <a href='/olamhrm/admin/subUnit.php'>Sub Unit</a>
                             <a href="/olamhrm/admin/categories.php">Job Categories</a>
-                            <!-- <a href="http://">Work shift</a> -->
+                             <a href="http://">Work shift</a> 
                         </div>
                     </button>
 
@@ -52,7 +54,7 @@
                             <a href="http://" target="_blank" rel="noopener noreferrer">Location</a>
                             <a href="http://" target="_blank" rel="noopener noreferrer">Structure</a>
                         </div>
-                    </button>
+                    </button> -->
 
                     <!-- <button class="second-level">Qualifications<i class="fa fa-caret-down ml-2"></i>
                         <div class="third-level">
@@ -79,7 +81,7 @@
                         </div>
                     </button> -->
 
-                </div>
+                <!-- </div>
             </div>
 
             <div class="subnav">
@@ -181,4 +183,4 @@
             </div>
             <a class="sub-links f" href="#contact">Contact</a>
         </div>
-    </header>
+    </header> -->

@@ -184,6 +184,7 @@ $(document).ready(function () {
         encode: true,
         success: function (data) {
           alert(data);
+          get_emergency_contact()
         },
         error: function (error) {
           /**on error function */

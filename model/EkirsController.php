@@ -1,10 +1,12 @@
 <?php 
+ session_start();
 class Controller
 {
   private  $pdo = null;
   private  $password="";
   private  $user="root"; 
   private  $fileExtension  = ["jpg", "jpeg", "pdf"];
+  private  $module='';
  
 
    function __construct(){
@@ -33,6 +35,8 @@ class Controller
                 return $this->employeeDetails($runData);
             case 'admin':
                 return $this->performAdmin($runData);
+            case 'login':
+                return $this->login($runData);
             default :
             $resp = new stdClass();
             $resp->message = "Something is definitely not right!!!";
@@ -50,6 +54,8 @@ private function performAdmin($runData){ //only working for admin
               return $this->addJobTitle($runData);
         case 'general':
                 return $this->addGeneral($runData);
+        case 'usersManagement':
+                return $this->addUsers($runData);
         case 'getJobTitle':
             $query ="SELECT * FROM hr_job_title";
             return $this->getData1($query);
@@ -61,7 +67,10 @@ private function performAdmin($runData){ //only working for admin
             return $this->getData1($query);
         case 'getSubUnit':
             $query ="SELECT * FROM hr_sub_unit";
-            return $this->getData1($query);      
+            return $this->getData1($query);   
+        case 'getUsers':
+            $query ="SELECT user.id, user.emp_name, user.username, user.status, userrole.role FROM hr_user AS user INNER JOIN hr_role AS userrole WHERE user.role_id=userrole.id";
+            return $this->getData1($query);     
         case 'deleteJobTitle':
             $query ="DELETE FROM hr_job_title WHERE id=:id";
             return $this->deleteData2($runData,$query ); 
@@ -74,6 +83,9 @@ private function performAdmin($runData){ //only working for admin
         case 'deleteSubUnit':
             $query ="DELETE FROM hr_sub_unit WHERE id=:id";
             return $this->deleteData2($runData,$query );    
+        case 'deleteUser':
+            $query ="DELETE FROM hr_user WHERE id=:id";
+            return $this->deleteData2($runData,$query );  
         default:
             # code...
             break;
@@ -81,7 +93,7 @@ private function performAdmin($runData){ //only working for admin
 }
 
 
-   
+   //PERFOM MANY CASE FUNCTION THIS IS ONLY FOR EMPLOYEEDETAILS MODULE
    private function employeeDetails($runData){
     switch ($runData->k) {
         case 'employeePersonalDetails':
@@ -183,6 +195,186 @@ private function performAdmin($runData){ //only working for admin
 }
 
 
+/*********************************************LOGIN*************************************************** */
+private function login($runData){
+    $query = 'SELECT username, status, role_id FROM hr_user AS u WHERE u.username=:username AND 
+    u.password=:password AND u.status="Enabled"';
+    $result = $this->pdo->prepare($query);
+    $result->execute([
+        ':username' => $runData->b,
+        ':password' => $runData->c,
+    ]);
+    if ($result -> rowCount() > 0)
+    {
+        $result -> setFetchMode(PDO::FETCH_ASSOC);
+        $result = $result -> fetchall();
+        $response = $result;
+      //  return  $response;
+        $_SESSION['a'] = $response[0]['username'];
+        $_SESSION['b'] = $response[0]['role_id'];
+        // $_SESSION['c'] = $_SERVER['REQUEST_TIME'];
+        // return[$_SESSION];
+    }
+    return  '';
+}
+
+/*********************************************LOGIN*************************************************** */
+
+
+/*********************************************GET MODULE DATA*************************************************** */
+
+public function getModule(){
+    $username = strval($_SESSION["a"]);
+    $roleId = strval($_SESSION["b"]);
+    $query = 'SELECT u.username, u.status, u.role_id, m.name FROM hr_user AS u INNER JOIN hr_module AS m INNER JOIN hr_module_permission AS p WHERE p.role_id =:role_id AND u.username=:username AND p.module_id = m.id';
+    $result = $this->pdo->prepare($query);
+    $result->execute([':role_id' => $roleId, ':username' => $username, ]);
+    if ($result -> rowCount() > 0)
+    {
+        $result -> setFetchMode(PDO::FETCH_ASSOC);
+        $result = $result -> fetchall();
+        $response = $result;
+       
+      foreach( $response as $data){
+            switch ($data['name']) {
+                case 'Admin':
+                    $this->module .= '<div class="subnav">
+                                        <button class="subnavbtn a admin_header">Admin <i class="fa fa-caret-down ml-2"></i></button>
+                                        <div class="subnav-content">
+                        
+                                            <button class="second-level user_header">User Management <i class="fa fa-caret-down ml-2"></i>
+                                                <div class="third-level">
+                                                    <a href="/olamhrm/admin/usersManagement.php">Users</a>
+                                                </div>
+                                            </button>
+                        
+                                            <button class="second-level job_header">Job<i class="fa fa-caret-down ml-2"></i>
+                                                <div class="third-level">
+                                                    <a href="/olamhrm/admin/jobTitle.php">Job Titles</a>
+                                                    <a href="/olamhrm/admin/payGrades.php">Pay Grades</a>
+                                                    <a href="/olamhrm/admin/subUnit.php">Sub Unit</a>
+                                                    <a href="/olamhrm/admin/categories.php">Job Categories</a>
+                                                    <!-- <a href="http://">Work shift</a> -->
+                                                </div>
+                                            </button>
+                        
+                                            <button class="second-level">Organization<i class="fa fa-caret-down ml-2"></i>
+                                                <div class="third-level">
+                                                    <a href="http://" target="_blank" rel="noopener noreferrer">General Information</a>
+                                                    <a href="http://" target="_blank" rel="noopener noreferrer">Location</a>
+                                                    <a href="http://" target="_blank" rel="noopener noreferrer">Structure</a>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>';
+                    break;
+                case 'PIM':
+                        $this->module .= '<div class="subnav">
+                                            <button class="subnavbtn pim b" >PIM <i class="fa fa-caret-down"></i></button>
+                                            <div class="subnav-content" >
+                                                <button class="second-level">Configuration <i class="fa fa-caret-down ml-2"></i>
+                                                    <div class="third-level">
+                                                        <a href="#">Optional Fields</a>
+                                                        <a href="#">Custom Fields</a>
+                                                        <a href="#">Data Import</a>
+                                                        <a href="#">Reporting Methods</a>
+                                                        <a href="#">Termination Reasons</a>
+                            
+                                                    </div>
+                                                </button>
+                                                <button class="second-level employee-list">
+                                                    <a href="/olamhrm/pim/employeeList.php">Employee list</a>
+                                                </button>
+                                                <button class="second-level add-employee">
+                                                    <a href="/olamhrm/pim/addEmployee.php">Add Employee</a>
+                                                </button>
+                                            </div>
+                                        </div>';
+                        break;
+                case 'Performance':
+                        $this->module .= '<div class="subnav">
+                                            <button class="subnavbtn d">Performance<i class="fa fa-caret-down"></i></button>
+                                            <div class="subnav-content">
+                                                <button class="second-level">Configure<i class="fa fa-caret-down ml-2"></i>
+                                                    <div class="third-level">
+                                                        <a href="#">KPIs</a>
+                                                        <a href="#">Trackers</a>
+                                                    </div>
+                                                </button>
+                                                <button class="second-level">Manage Reviews<i class="fa fa-caret-down ml-2"></i>
+                                                    <div class="third-level">
+                                                        <a href="#">Manage Reviews</a>
+                                                        <a href="#">My Reviews</a>
+                                                        <a href="#">Review List</a>
+                                                    </div>
+                                                </button>
+                                                <button class="second-level">
+                                                    <a href="#">My Trackers</a>
+                                                </button>
+                                                <button class="second-level">
+                                                    <a href="#">Employee Trackers</a>
+                                                </button>
+                                            </div>
+                                        </div>';
+                        break;
+                case 'Leave':
+                        $this->module .='<div class="subnav">
+                                        <button class="subnavbtn c"><a href="#">Leave</a></button>
+                                        </div>';
+                        break;
+                case 'Dashboard':
+                        $this->module .='<div class="subnav">
+                                        <button class="subnavbtn e"><a href="#">Dashboard</a></button>
+                                        </div>';
+                    break;
+                case 'MyInfo':
+                        $this->module .= '<div class="subnav">
+                                         <button class="subnavbtn"><a href="#">My Info</a></button>
+                                         </div>';
+                        break;
+                   
+                default:
+                    $this->module .= '';
+                    break;
+            } 
+      }
+
+      return  $this->module ;
+       
+    }
+    return "";
+}
+
+
+
+/*********************************************GET MODULE DATA*************************************************** */
+
+
+private function addUsers($runData){
+   
+      //check entry for add user
+        $username = strval($runData -> d);
+        $query  = "SELECT username FROM hr_user WHERE username ='$username'";
+        $respEntry = $this->checkEntry($query);
+        if($respEntry -> is_entry === "true"){
+            return "Username already taken";  
+        }
+
+    $query     = "INSERT INTO hr_user(emp_name, username, password, role_id, status) VALUES (:emp_name, :username, :password, :role_id, :status)";
+    $statement = $this->pdo->prepare($query);
+    $statement->execute
+        ([
+            ':emp_name'   => $runData -> c,
+            ':username'   => $runData -> d,
+            ':password'   => $runData -> e,
+            ':role_id'    => $runData -> b,
+            ':status'     => $runData -> f, 
+        ]);
+        if (($statement->rowCount()) > 0){
+            return "true";
+        }
+        return "false";
+}
 
 
 private function addJobTitle($runData){
@@ -236,11 +428,11 @@ private function deleteData2($runData,$query){
                 $statement->execute([':id' => $data]);                       
             }
             if ($statement->rowCount() > 0){
-                return "Record Deleted Successfully"; 
+                return "deleted"; 
               }  
           else
               {
-              return  "Record cannot be deleted!!!" ;  
+              return  "failed to delete" ;  
               } 
 
 }
@@ -842,7 +1034,7 @@ private function addJob($runData){
                              $query  = "SELECT id FROM hr_employee WHERE employee_id ='$employee_id' ";
                              $respEntry = $this->checkEntry($query);
                             //create user login
-                            $respCreateUserlogin = $this->createUserLogin($runData);
+                            $respCreateUserlogin = $this->createUserLogin($runData, $respEntry);
                                 if ($respCreateUserlogin == "true"){  
                                     return $this->responseData("success", $respEntry->resultData, "employee added successfully and User login is created!!!");  
                                 }else{
@@ -871,11 +1063,15 @@ private function addJob($runData){
 
 
 
-    private function createUserLogin($runData){
-    $query     = "INSERT INTO hr_user(username, password, role_id, status) VALUES (:username, :password, :role_id, :status)";
+    private function createUserLogin($runData,$respEntry){
+    $data= $respEntry->resultData;
+    $empID = $data[0]['id'];
+    $query     = "INSERT INTO hr_user(emp_id, emp_name, username, password, role_id, status) VALUES (:emp_id, :emp_name, :username, :password, :role_id, :status)";
     $statement = $this->pdo->prepare($query);
     $statement->execute
         ([
+            ':emp_id'     => $empID,
+            ':emp_name'   => $runData -> c . " " . $runData -> d,
             ':username'   => $runData -> g,
             ':password'   => $runData -> h,
             ':role_id'    => 4, //employee
